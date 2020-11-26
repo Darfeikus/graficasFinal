@@ -10,7 +10,7 @@ class Scene
         
         Player player;
         vector<Enemy> enemies;
-        
+        int collisions = 0;
         struct center
         {
             Point point;

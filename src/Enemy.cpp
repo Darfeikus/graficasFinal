@@ -1,8 +1,12 @@
 #include "Enemy.h"
 
-Enemy::Enemy()
+Enemy::Enemy(vector<Point> points)
 {
-    //ctor
+    this->points = points;
+}
+
+void Enemy::draw(){
+    
 }
 
 Enemy::~Enemy()

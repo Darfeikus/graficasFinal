@@ -68,7 +68,7 @@ void Player::specialInput(int key, int x, int y)
             LookAt();
             break;
     }
-    draw();
+    move = false;
 }
 
 void Player::normalInput(unsigned char key, int x, int y)
@@ -125,7 +125,7 @@ void Player::normalInput(unsigned char key, int x, int y)
             bullets.push_back(Bullet(position,eye));
             break;
     }
-    draw();
+    move = false;
 }
 
 Player::~Player()

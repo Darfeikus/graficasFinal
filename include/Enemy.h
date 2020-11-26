@@ -6,7 +6,9 @@
 class Enemy
 {
     public:
-        Enemy();
+        vector<Point> points;
+        Enemy(vector<Point> points);
+        void draw();
         virtual ~Enemy();
 
     protected:

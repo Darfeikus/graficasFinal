@@ -16,7 +16,7 @@ Point::Point(GLfloat x, GLfloat y, GLfloat z)
 }
 
 void Point::print(){
-    cout << "{" << x << ", " << y << ", " << z << endl;
+    cout << "{" << x << ", " << y << ", " << z << "}" << endl;
 }
 
 Point::~Point()

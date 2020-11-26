@@ -124,9 +124,9 @@ bool Scene::checkCollision(Point point)
 
 bool Scene::checkBoundaries(Point point)
 {
-    if (point.x < -25 || point.x > 25)
+    if (point.x < -24 || point.x > 24)
         return true;
-    if (point.z < -25 || point.z > 25)
+    if (point.z < -24 || point.z > 24)
         return true;
     return false;
 }
@@ -142,6 +142,7 @@ void Scene::draw()
     else
         player.updateLastPosition();
         
+    player.draw();
     player.move=true;
 
     drawAxis();
