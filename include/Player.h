@@ -36,8 +36,6 @@ class Player
         void updateLastPosition();
         void resetToLastPosition();
 
-        void shoot();
-
         virtual ~Player();
 
     protected:

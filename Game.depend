@@ -15,13 +15,13 @@
 	<math.h>
 	<iostream>
 
-1606370171 /home/darfeikus/Documents/Graficas/Game/include/Scene.h
+1606370400 /home/darfeikus/Documents/Graficas/Game/include/Scene.h
 	"Enemy.h"
 
 1606361218 /home/darfeikus/Documents/Graficas/Game/include/Enemy.h
 	"Player.h"
 
-1606370035 /home/darfeikus/Documents/Graficas/Game/include/Player.h
+1606370905 /home/darfeikus/Documents/Graficas/Game/include/Player.h
 	"Bullet.h"
 	"Point.h"
 	<stdlib.h>
@@ -42,13 +42,13 @@
 1606361204 source:/home/darfeikus/Documents/Graficas/Game/src/Enemy.cpp
 	"Enemy.h"
 
-1606370055 source:/home/darfeikus/Documents/Graficas/Game/src/Player.cpp
+1606371019 source:/home/darfeikus/Documents/Graficas/Game/src/Player.cpp
 	"Player.h"
 
 1606369520 source:/home/darfeikus/Documents/Graficas/Game/src/Point.cpp
 	"Point.h"
 	<string>
 
-1606369612 source:/home/darfeikus/Documents/Graficas/Game/src/Scene.cpp
+1606371100 source:/home/darfeikus/Documents/Graficas/Game/src/Scene.cpp
 	"Scene.h"
 

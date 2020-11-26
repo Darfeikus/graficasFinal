@@ -54,10 +54,6 @@ class Scene
         float Y_MAX=50;
         float Z_MIN=-50;
         float Z_MAX=50;
-        //Variables para matrices de rotacion y traslación
-        //float Radio=1.0;
-        float PI = M_PI;
-        float colissionRadius = 1;
     
     private:
     
