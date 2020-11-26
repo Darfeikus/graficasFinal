@@ -43,8 +43,14 @@
 			<Add directory="/home/darfeikus/Documents/Graficas/GLUT/lib" />
 		</Linker>
 		<Unit filename="include/Bullet.h" />
+		<Unit filename="include/Player.h" />
+		<Unit filename="include/Point.h" />
+		<Unit filename="include/Scene.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Bullet.cpp" />
+		<Unit filename="src/Player.cpp" />
+		<Unit filename="src/Point.cpp" />
+		<Unit filename="src/Scene.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

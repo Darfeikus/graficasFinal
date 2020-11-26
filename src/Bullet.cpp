@@ -3,17 +3,14 @@
 #include <iostream>
 using namespace std;
 
-Bullet::Bullet(float x, float y, float z, float dx, float dy, float dz)
+Bullet::Bullet(Point pos, Point dir)
 {
-    this->x = x;
-    this->y = y-1;
-    this->z = z;
+    this->position = pos;
+    this->position.y--;
     
-    float m = sqrt(pow(x-dx,2)+pow(y-dy,2)+pow(z-dz,2));
+    float m = sqrt(pow(pos.x-dir.x,2)+pow(pos.y-dir.y,2)+pow(pos.z-dir.z,2));
 
-    this->deltax = (x-dx)/m;
-    this->deltay = (y-dy)/m;
-    this->deltaz = (z-dz)/m;
+    this->delta = Point((pos.x-dir.x)/m,(pos.y-dir.y)/m,(pos.z-dir.z)/m);
 }
 
 void Bullet::draw()
@@ -21,7 +18,7 @@ void Bullet::draw()
     time++;
     glPushMatrix();
     glColor3d(0,1,0);
-    glTranslatef(x+=deltax,y+=deltay,z+=deltaz);
+    glTranslatef(position.x+=delta.x,position.y+=delta.y,position.z+=delta.z);
     glutSolidSphere(0.5,10,10);
     glPopMatrix();
 }

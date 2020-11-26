@@ -1,17 +1,11 @@
-
-
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
 #include <GL/glut.h>
 #endif
 
-#include "Bullet.h"
-#include <stdlib.h>
-#include <math.h>
-#include <stdio.h>
-#include <vector> 
-#include <iostream>
+#include "Scene.h"
+
 using namespace std; 
 
 //Variables dimensiones de la pantalla
@@ -128,13 +122,12 @@ void drawWalls()
 
 void drawCubes(void)
 {
-    drawWalls();
+    
     glPushMatrix();
     glTranslated(10,0,0);
     center.push_back({10,0,0});
     glColor3f(1.0,0.0,1.0);
     glutSolidCube(1);
-
     glTranslated(-20,0,0);
     center.push_back({-10,0,0});
     glutSolidCube(1);
@@ -183,10 +176,31 @@ int checkCenters(float x, float y, float z){
     }
     return 0;
 }
+
 void SpecialInput(int key, int x, int y)
 {
     switch(key){
-        case GLUT_KEY_UP:
+        case GLUT_KEY_LEFT:
+            Theta -= 3.0f;
+            Theta = (Theta < 0.0) ? 359.0 : Theta;
+            LookAt();
+            break;
+        case GLUT_KEY_RIGHT:
+            Theta += 3.0f;
+            Theta = (Theta > 359.0) ? 0.0 : Theta;
+            LookAt();
+            break;
+    }
+
+    glLoadIdentity();
+    gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z);
+    glutPostRedisplay();
+}
+
+void NormalInput(unsigned char key, int x, int y)
+{
+    switch(key){
+        case 'w':
             if(EYE_X+Direction[0] < -25 || EYE_X+Direction[0] > 25)
                 break;
             if(EYE_Z+Direction[2] < -25 || EYE_Z+Direction[2] > 25)
@@ -200,7 +214,7 @@ void SpecialInput(int key, int x, int y)
             CENTER_Y = EYE_Y + Direction[1];
             CENTER_Z = EYE_Z + Direction[2];
             break;
-        case GLUT_KEY_DOWN:
+        case 's':
             if(EYE_X-Direction[0] < -25 || EYE_X-Direction[0] > 25)
                 break;
             if(EYE_Z-Direction[2] < -25 || EYE_Z-Direction[2] > 25)
@@ -214,38 +228,25 @@ void SpecialInput(int key, int x, int y)
             CENTER_Y = EYE_Y + Direction[1];
             CENTER_Z = EYE_Z + Direction[2];
             break;
-        case GLUT_KEY_LEFT:
-            Theta -= 3.0f;
-            Theta = (Theta < 0.0) ? 359.0 : Theta;
-            LookAt();
-            break;
-        case GLUT_KEY_RIGHT:
-            Theta += 3.0f;
-            Theta = (Theta > 359.0) ? 0.0 : Theta;
-            LookAt();
-            break;
-        case GLUT_KEY_END:
-            glPushMatrix();
-            glTranslated(CENTER_X,CENTER_Y,CENTER_Z);
-            glColor3f(1,0,0);
-            glutSolidSphere(30,10,10);
-            glPopMatrix();
-            // bullets.push_back(Bullet(CENTER_X,CENTER_Y,CENTER_Z,EYE_X,EYE_Y,EYE_Z));
+        case ' ':
+            bullets.push_back(Bullet(CENTER_X,CENTER_Y,CENTER_Z,EYE_X,EYE_Y,EYE_Z));
             break;
     }
 
     glLoadIdentity();
     gluLookAt(EYE_X,EYE_Y,EYE_Z,CENTER_X,CENTER_Y,CENTER_Z,UP_X,UP_Y,UP_Z);
-    cout << "Current xyz " << CENTER_X << "," << CENTER_Y << "," << CENTER_Z << endl;
-    flush(cout);
     glutPostRedisplay();
 }
 
 void drawBullets(){
+    vector<int> del;
     for (size_t i = 0; i < bullets.size(); i++)
-    {
-        bullets[i].draw();
-    }
+        if (bullets[i].time < 100)
+            bullets[i].draw();
+        else
+            del.push_back(i);
+    for (size_t i = 0; i < del.size(); i++)
+        bullets.erase(bullets.begin()+del[i]);
 }
 
 //--------------------------------------------------------------------------
@@ -253,10 +254,11 @@ void display()
 {
     glClear(GL_COLOR_BUFFER_BIT);
     drawAxis();
+    drawWalls();
     drawCubes();
+    drawBullets();
     glFlush();
     glutSwapBuffers();
-    drawBullets();
 }
 
 int main(int argc, char **argv)
@@ -270,6 +272,7 @@ int main(int argc, char **argv)
     glutDisplayFunc(display);
     glutIdleFunc(display);
     glutSpecialFunc(SpecialInput);
+    glutKeyboardFunc(NormalInput);
     glutMainLoop();
     return 0;
 }
