@@ -21,6 +21,8 @@ class Player
         Point up;
         Point direction;
 
+        bool move;
+
         vector<Point> lastPosition;
         Point getLastPosition();
 

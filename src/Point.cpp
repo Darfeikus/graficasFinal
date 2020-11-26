@@ -1,4 +1,5 @@
 #include "Point.h"
+#include <string>
 
 Point::Point()
 {
@@ -12,6 +13,10 @@ Point::Point(GLfloat x, GLfloat y, GLfloat z)
     this->x = x;
     this->y = y;
     this->z = z;
+}
+
+void Point::print(){
+    cout << "{" << x << ", " << y << ", " << z << endl;
 }
 
 Point::~Point()

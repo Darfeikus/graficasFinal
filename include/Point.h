@@ -22,7 +22,7 @@ class Point
         Point();
         Point(GLfloat x, GLfloat y, GLfloat z);        
         GLfloat x,y,z;
-        
+        void print();
         virtual ~Point();
 
     protected:

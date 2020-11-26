@@ -10,7 +10,14 @@ class Scene
         
         Player player;
         vector<Enemy> enemies;
-        vector<Point> centers;
+        
+        struct center
+        {
+            Point point;
+            float radius;
+        };
+        
+        vector<center> centers;
 
         void main(int argc, char **argv);
         void init();
@@ -21,10 +28,9 @@ class Scene
         void drawCubes();
         void drawBullets();
         void drawEnemies();
-        void checkCollision(Point point);
-
-        void specialInput(int key, int x, int y);
-        void normalInput(unsigned char key, int x, int y);
+        
+        bool checkCollision(Point point);
+        bool checkBoundaries(Point point);
 
         //GlutKeyboardFunc
         void playerMovement();

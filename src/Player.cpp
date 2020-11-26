@@ -53,6 +53,8 @@ void Player::LookAt()
 
 void Player::specialInput(int key, int x, int y)
 {
+    if(!move)
+        return;
     switch(key)
     {
         case GLUT_KEY_LEFT:
@@ -66,12 +68,13 @@ void Player::specialInput(int key, int x, int y)
             LookAt();
             break;
     }
-
     draw();
 }
 
 void Player::normalInput(unsigned char key, int x, int y)
 {
+    if(!move)
+        return;
     switch(key)
     {
         case 'w':
@@ -94,7 +97,6 @@ void Player::normalInput(unsigned char key, int x, int y)
             bullets.push_back(Bullet(position,eye));
             break;
     }
-
     draw();
 }
 

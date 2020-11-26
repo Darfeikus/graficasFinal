@@ -7,16 +7,6 @@ Scene::Scene()
     
 }
 
-void Scene::specialInput(int key, int x, int y)
-{
-
-}
-
-void Scene::normalInput(unsigned char key, int x, int y)
-{
-
-}
-
 void Scene::drawAxis()
 {
      //X axis in red
@@ -83,21 +73,22 @@ void Scene::drawWalls()
 void Scene::drawCubes(void)
 {
     
+    glColor3f(0.0,0.0,1.0);
+
     glPushMatrix();
     glTranslated(10,0,0);
-    centers.push_back(Point(10,0,0));
+    centers.push_back({Point(10,0,0),1});
     glutSolidCube(1);
     glTranslated(-20,0,0);
-    centers.push_back(Point(-10,0,0));
+    centers.push_back({Point(-10,0,0),1});
     glutSolidCube(1);
     glPopMatrix();
     glPushMatrix();
     glTranslated(0,0,10);
-    centers.push_back(Point(0,0,10));
-    glColor3f(0.0,0.0,1.0);
+    centers.push_back({Point(0,0,10),1});
     glutSolidCube(1);
     glTranslated(0,0,-20);
-    centers.push_back(Point(0,0,-10));
+    centers.push_back({Point(0,0,-10),1});
     glutSolidCube(1);
     glPopMatrix();
     
@@ -114,9 +105,43 @@ void Scene::drawBullets(){
         player.bullets.erase(player.bullets.begin()+del[i]);
 }
 
+
+bool Scene::checkCollision(Point point)
+{
+    float distance = 0;
+    for (size_t i = 0; i < centers.size(); i++)
+    {
+        distance = sqrt(
+            pow(centers[i].point.x-point.x,2)+
+            pow(centers[i].point.y-point.y,2)+
+            pow(centers[i].point.z-point.z,2)
+        );
+        if(distance< centers[i].radius)
+            return true;
+    }
+    return false;
+}
+
+bool Scene::checkBoundaries(Point point)
+{
+    if (point.x < -25 || point.x > 25)
+        return true;
+    if (point.z < -25 || point.z > 25)
+        return true;
+    return false;
+}
+
 void Scene::draw()
 {
     glClear(GL_COLOR_BUFFER_BIT);
+
+    player.move=false;
+    if(checkCollision(player.position) || checkBoundaries(player.position))
+        player.resetToLastPosition();
+    else
+        player.updateLastPosition();
+    player.move=true;
+
     drawAxis();
     drawWalls();
     drawCubes();
