@@ -21,7 +21,6 @@ void Player::resetToLastPosition()
     this->eye = lastPosition[1];
     this->up = lastPosition[2];
     this->direction = lastPosition[3];
-    draw();
 }
 
 void Player::draw(){
@@ -95,7 +94,6 @@ void Player::normalInput(unsigned char key, int x, int y)
             break;
         case 'a':
             Theta -= 90;
-            Theta = (Theta < 0) ? abs(Theta) : Theta;
             LookAt();
             eye.x += direction.x;
             eye.y += direction.y;
@@ -104,12 +102,10 @@ void Player::normalInput(unsigned char key, int x, int y)
             position.y = eye.y + direction.y;
             position.z = eye.z + direction.z;
             Theta += 90;
-            Theta = (Theta > 359.0) ? fmod(Theta,360) : Theta;
             LookAt();
             break;
         case 'd':
             Theta += 90;
-            Theta = (Theta > 359.0) ? fmod(Theta,360) : Theta;
             LookAt();
             eye.x += direction.x;
             eye.y += direction.y;
@@ -118,7 +114,6 @@ void Player::normalInput(unsigned char key, int x, int y)
             position.y = eye.y + direction.y;
             position.z = eye.z + direction.z;
             Theta -= 90;
-            Theta = (Theta < 0) ? abs(Theta) : Theta;
             LookAt();
             break;
         case ' ':

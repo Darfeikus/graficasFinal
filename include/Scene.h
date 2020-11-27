@@ -21,6 +21,7 @@ class Scene
 
         void main(int argc, char **argv);
         void init();
+        void initEnemies();
         
         void draw();
         void drawWalls();

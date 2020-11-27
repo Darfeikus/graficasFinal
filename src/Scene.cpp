@@ -105,6 +105,13 @@ void Scene::drawBullets(){
         player.bullets.erase(player.bullets.begin()+del[i]);
 }
 
+void Scene::drawEnemies(){
+    for (size_t i = 0; i < enemies.size(); i++)
+    {
+        enemies[i].update();
+        enemies[i].draw();
+    }
+}
 
 bool Scene::checkCollision(Point point)
 {
@@ -143,12 +150,15 @@ void Scene::draw()
         player.updateLastPosition();
         
     player.draw();
-    player.move=true;
 
+    player.move=true;
+    
     drawAxis();
     drawWalls();
     drawCubes();
     drawBullets();
+    drawEnemies();
+
     glFlush();
     glutSwapBuffers();
 }
@@ -161,10 +171,16 @@ void Scene::init()
     gluPerspective(FOVY, (GLfloat)WIDTH/HEIGTH, ZNEAR, ZFAR);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    player = Player();
+    player = Player();    
     glClearColor(0,0,0,0);
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     glShadeModel(GL_FLAT);
+}
+
+void Scene::initEnemies(){
+    enemies.push_back(
+        Enemy({{0,0,0},{25,0,0},{25,0,25},{-25,0,25}},1)
+    );
 }
 
 void Scene::main(int argc, char **argv)
@@ -175,6 +191,7 @@ void Scene::main(int argc, char **argv)
     glutInitWindowSize(WIDTH, HEIGTH);
     glutCreateWindow("Scene");
     init();
+    initEnemies();
     setupDrawCallback();
     setupSpecialFuncCallback();
     setupNormalFuncCallback();

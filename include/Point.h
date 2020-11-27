@@ -22,7 +22,11 @@ class Point
         Point();
         Point(GLfloat x, GLfloat y, GLfloat z);        
         GLfloat x,y,z;
+        
         void print();
+        
+        static int compare(Point p1, Point p2);
+
         virtual ~Point();
 
     protected:
