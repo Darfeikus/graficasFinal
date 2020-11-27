@@ -10,7 +10,9 @@ class Scene
         
         Player player;
         vector<Enemy> enemies;
+        
         int collisions = 0;
+        
         struct center
         {
             Point point;
@@ -30,6 +32,7 @@ class Scene
         void drawBullets();
         void drawEnemies();
         
+        void checkCollisionEnemies();
         bool checkCollision(Point point);
         bool checkBoundaries(Point point);
 

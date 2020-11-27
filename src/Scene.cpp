@@ -7,31 +7,6 @@ Scene::Scene()
     
 }
 
-void Scene::drawAxis()
-{
-     //X axis in red
-     glBegin(GL_LINES);
-       glColor3f(1.0f,0.0f,0.0f);
-       glVertex3f(X_MIN,0.0,0.0);
-       glColor3f(1.0f,0.0f,0.0f);
-       glVertex3f(X_MAX,0.0,0.0);
-     glEnd();
-     //Y axis in green
-     glBegin(GL_LINES);
-       glColor3f(0.0f,1.0f,0.0f);
-       glVertex3f(0.0,Y_MIN,0.0);
-       glColor3f(0.0f,1.0f,0.0f);
-       glVertex3f(0.0,Y_MAX,0.0);
-     glEnd();
-     //Z axis in blue
-     glBegin(GL_LINES);
-       glColor3f(0.0f,0.0f,1.0f);
-       glVertex3f(0.0,0.0,Z_MIN);
-       glColor3f(0.0f,0.0f,1.0f);
-       glVertex3f(0.0,0.0,Z_MAX);
-     glEnd();
-}
-
 void Scene::drawWalls()
 {
     glPushMatrix();
@@ -39,30 +14,30 @@ void Scene::drawWalls()
     glBegin(GL_QUADS);
     /* Floor */
     glColor3f(0.5,0,1);
-    glVertex3f(-25,-10,-25);
-    glVertex3f(25,-10,-25);
-    glVertex3f(25,-10,25);
-    glVertex3f(-25,-10,25);
+    glVertex3f(-25,-1,-25);
+    glVertex3f(25,-1,-25);
+    glVertex3f(25,-1,25);
+    glVertex3f(-25,-1,25);
     glColor3f(1,1,0);
         /* Walls */
-    glVertex3f(-25,-10,25);
-    glVertex3f(25,-10,25);
+    glVertex3f(-25,-5,25);
+    glVertex3f(25,-5,25);
     glVertex3f(25,10,25);
     glVertex3f(-25,10,25);
 
-    glVertex3f(-25,-10,-25);
-    glVertex3f(25,-10,-25);
+    glVertex3f(-25,-5,-25);
+    glVertex3f(25,-5,-25);
     glVertex3f(25,10,-25);
     glVertex3f(-25,10,-25);
 
     glVertex3f(25,10,25);
-    glVertex3f(25,-10,25);
-    glVertex3f(25,-10,-25);
+    glVertex3f(25,-5,25);
+    glVertex3f(25,-5,-25);
     glVertex3f(25,10,-25);
 
     glVertex3f(-25,10,25);
-    glVertex3f(-25,-10,25);
-    glVertex3f(-25,-10,-25);
+    glVertex3f(-25,-5,25);
+    glVertex3f(-25,-5,-25);
     glVertex3f(-25,10,-25);
     glEnd();
 
@@ -138,9 +113,34 @@ bool Scene::checkBoundaries(Point point)
     return false;
 }
 
+void Scene::checkCollisionEnemies()
+{
+    float distance = 0;
+
+    for (size_t i = 0; i < player.bullets.size(); i++)
+    {
+        for (size_t j = 0; j < enemies.size(); j++)
+        {
+            distance = sqrt(
+                pow(player.bullets[i].position.x-enemies[j].position.x,2)+
+                pow(player.bullets[i].position.y-enemies[j].position.y,2)+
+                pow(player.bullets[i].position.z-enemies[j].position.z,2)
+            );
+            if (distance < enemies[j].radius)
+            {
+                player.bullets.erase(player.bullets.begin()+i);
+                enemies.erase(enemies.begin()+j);
+                return;
+            }
+        }        
+    }
+}
+
 void Scene::draw()
 {
     glClear(GL_COLOR_BUFFER_BIT);
+
+    checkCollisionEnemies();
 
     player.move=false;
 
@@ -153,12 +153,10 @@ void Scene::draw()
 
     player.move=true;
     
-    drawAxis();
     drawWalls();
-    drawCubes();
     drawBullets();
     drawEnemies();
-
+    drawCubes();
     glFlush();
     glutSwapBuffers();
 }
@@ -179,7 +177,16 @@ void Scene::init()
 
 void Scene::initEnemies(){
     enemies.push_back(
-        Enemy({{0,0,0},{25,0,0},{25,0,25},{-25,0,25}},1)
+        Enemy({{0,0,0},{25,0,0},{25,0,25},{-25,0,25}},1,5)
+    );
+    enemies.push_back(
+        Enemy({{0,0,0},{-25,0,0},{-25,0,-25},{25,0,-25}},1,5)
+    );
+    enemies.push_back(
+        Enemy({{0,0,0},{0,0,25},{-25,0,25},{25,0,25}},1,5)
+    );
+    enemies.push_back(
+        Enemy({{0,0,0},{0,0,-25},{25,0,-25},{-25,0,-25}},1,5)
     );
 }
 

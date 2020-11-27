@@ -11,12 +11,15 @@ class Enemy
         Point direction;
         
         vector<Point> points;
-        Enemy(vector<Point> points, int speed);
+        Enemy(vector<Point> points, int speed, float radius);
         
         int indexPoints;
         int numberOfPoints;
         int speed;
         int currentSpeed = 0;
+        
+        float radius;
+        
         bool clockwise = true;
 
         void draw();

@@ -1,9 +1,10 @@
 #include "Enemy.h"
 
-Enemy::Enemy(vector<Point> points, int speed)
+Enemy::Enemy(vector<Point> points, int speed, float radius)
 {
     this->speed = speed;
     this->points = points;
+    this->radius = radius;
     position = points[0];
     indexPoints = 0;
     numberOfPoints = points.size();
@@ -13,8 +14,6 @@ void Enemy::update()
 {
     if (Point().compare(position,points[indexPoints]))
     {
-        cout << "arrived at position " << indexPoints << endl;
-
         if (clockwise)
             indexPoints++;
         else
@@ -40,9 +39,6 @@ void Enemy::update()
             (points[indexPoints].y-position.y)/m,
             (points[indexPoints].z-position.z)/m
         );
-
-        cout << "direction = ";
-        direction.print();
     }
     if(currentSpeed == 0){
         position.x+=direction.x;
@@ -51,8 +47,7 @@ void Enemy::update()
         currentSpeed = speed;
     }
     else
-        currentSpeed--;
-    
+        currentSpeed--;   
 }
 
 void Enemy::draw()
