@@ -7,31 +7,33 @@ class Scene
 {
     public:
         Scene();
-        
+
         Player player;
         vector<Enemy> enemies;
-        
+
         int collisions = 0;
-        
+
+        GLuint	texture[2];
+
         struct center
         {
             Point point;
             float radius;
         };
-        
+
         vector<center> centers;
 
         void main(int argc, char **argv);
         void init();
         void initEnemies();
-        
+
         void draw();
         void drawWalls();
         void drawAxis();
         void drawCubes();
         void drawBullets();
         void drawEnemies();
-        
+
         void checkCollisionEnemies();
         bool checkCollision(Point point);
         bool checkBoundaries(Point point);
@@ -41,6 +43,7 @@ class Scene
         //GlutSpecialFunc
         void playerRotation();
 
+        void loadTextureFromFile(char *, int);
         virtual ~Scene();
 
     protected:
@@ -58,9 +61,9 @@ class Scene
         float Y_MAX=50;
         float Z_MIN=-50;
         float Z_MAX=50;
-    
+
     private:
-    
+
         void setupDrawCallback();
         void setupSpecialFuncCallback();
         void setupNormalFuncCallback();

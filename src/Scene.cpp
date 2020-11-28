@@ -1,55 +1,115 @@
 #include "Scene.h"
+#include "RgbImage.h"
 
 Scene* currentInstance;
 
 Scene::Scene()
 {
-    
+
+}
+
+void Scene::loadTextureFromFile(char * filename, int index){
+    glClearColor (0.0, 0.0, 0.0, 0.0);
+	glShadeModel(GL_FLAT);
+	glEnable(GL_DEPTH_TEST);
+
+	RgbImage theTexMap( filename );
+
+    //generate an OpenGL texture ID for this texture
+    glGenTextures(1, &texture[index]);
+    //bind to the new texture ID
+
+    glBindTexture(GL_TEXTURE_2D, texture[index]);
+
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, theTexMap.GetNumCols(), theTexMap.GetNumRows(), 0,
+                     GL_RGB, GL_UNSIGNED_BYTE, theTexMap.ImageData());
+    theTexMap.Reset();
+
 }
 
 void Scene::drawWalls()
 {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glBindTexture(GL_TEXTURE_2D, texture[1]);
+    glEnable(GL_TEXTURE_2D);
+
+    glColor4f(1, 1, 1, 1);
     glPushMatrix();
-    
+
     glBegin(GL_QUADS);
     /* Floor */
-    glColor3f(0.5,0,1);
+    glTexCoord2f(0.0, 0.0);
     glVertex3f(-25,-1,-25);
+    glTexCoord2f(0.0, 25.0);
     glVertex3f(25,-1,-25);
+    glTexCoord2f(25.0, 25.0);
     glVertex3f(25,-1,25);
+    glTexCoord2f(25.0, 0.0);
     glVertex3f(-25,-1,25);
-    glColor3f(1,1,0);
+
+    glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+    glBegin(GL_QUADS);
         /* Walls */
+    glTexCoord2f(0.0, 0.0);
     glVertex3f(-25,-5,25);
+    glTexCoord2f(0.0, 1.0);
     glVertex3f(25,-5,25);
+    glTexCoord2f(1.0, 1.0);
     glVertex3f(25,10,25);
+    glTexCoord2f(1.0, 0.0);
     glVertex3f(-25,10,25);
 
+    glTexCoord2f(0.0, 0.0);
     glVertex3f(-25,-5,-25);
+    glTexCoord2f(0.0, 1.0);
     glVertex3f(25,-5,-25);
+    glTexCoord2f(1.0, 1.0);
     glVertex3f(25,10,-25);
+    glTexCoord2f(1.0, 0.0);
     glVertex3f(-25,10,-25);
 
+    glTexCoord2f(0.0, 0.0);
     glVertex3f(25,10,25);
+    glTexCoord2f(0.0, 1.0);
     glVertex3f(25,-5,25);
+    glTexCoord2f(1.0, 1.0);
     glVertex3f(25,-5,-25);
+    glTexCoord2f(1.0, 0.0);
     glVertex3f(25,10,-25);
 
+    glTexCoord2f(0.0, 0.0);
     glVertex3f(-25,10,25);
+    glTexCoord2f(0.0, 1.0);
     glVertex3f(-25,-5,25);
+    glTexCoord2f(1.0, 1.0);
     glVertex3f(-25,-5,-25);
+    glTexCoord2f(1.0, 0.0);
     glVertex3f(-25,10,-25);
     glEnd();
 
+    glDisable(GL_TEXTURE_2D);
     glPopMatrix();
 
 }
 
 void Scene::drawCubes(void)
 {
-    
-    glColor3f(0.0,0.0,1.0);
-
+    glShadeModel(GL_SMOOTH);
+    float vertexColors[48] = {  // An RGB color value for each vertex
+           1,1,1,   1,0,0,   1,1,0,   0,1,0,
+           0,0,1,   1,0,1,   0,0,0,   0,1,1,
+           0.5,0.5,0.5,   0.5,0,0,   0.5,0.5,0,   0,0.5,0,
+           0,0,0.5,   0.5,0,0.5,   0.1,0.1,0.1,   0,0.5,0.5    };
+    glEnableClientState(GL_COLOR_ARRAY);
+    glColorPointer(3, GL_FLOAT, 0, vertexColors);
     glPushMatrix();
     glTranslated(10,0,0);
     centers.push_back({Point(10,0,0),1});
@@ -66,7 +126,7 @@ void Scene::drawCubes(void)
     centers.push_back({Point(0,0,-10),1});
     glutSolidCube(1);
     glPopMatrix();
-    
+    glDisableClientState(GL_COLOR_ARRAY);
 }
 
 void Scene::drawBullets(){
@@ -132,7 +192,7 @@ void Scene::checkCollisionEnemies()
                 enemies.erase(enemies.begin()+j);
                 return;
             }
-        }        
+        }
     }
 }
 
@@ -148,11 +208,11 @@ void Scene::draw()
         player.resetToLastPosition();
     else
         player.updateLastPosition();
-        
+
     player.draw();
 
     player.move=true;
-    
+
     drawWalls();
     drawBullets();
     drawEnemies();
@@ -164,12 +224,13 @@ void Scene::draw()
 
 void Scene::init()
 {
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(FOVY, (GLfloat)WIDTH/HEIGTH, ZNEAR, ZFAR);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    player = Player();    
+    player = Player();
     glClearColor(0,0,0,0);
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
     glShadeModel(GL_FLAT);
@@ -193,10 +254,12 @@ void Scene::initEnemies(){
 void Scene::main(int argc, char **argv)
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB );
     glutInitWindowPosition(1500, 50);
     glutInitWindowSize(WIDTH, HEIGTH);
     glutCreateWindow("Scene");
+    loadTextureFromFile("img/textura2.bmp", 0);
+    loadTextureFromFile("img/textura1.bmp", 1);
     init();
     initEnemies();
     setupDrawCallback();
