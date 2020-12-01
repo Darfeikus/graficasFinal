@@ -70,6 +70,26 @@ void Player::specialInput(int key, int x, int y)
     move = false;
 }
 
+void Player::moveForward()
+{
+    eye.x += direction.x;
+    eye.y += direction.y;
+    eye.z += direction.z;
+    position.x = eye.x + direction.x;
+    position.y = eye.y + direction.y;
+    position.z = eye.z + direction.z;
+}
+
+void Player::moveBackward()
+{
+    eye.x -= direction.x;
+    eye.y -= direction.y;
+    eye.z -= direction.z;
+    position.x = eye.x + direction.x;
+    position.y = eye.y + direction.y;
+    position.z = eye.z + direction.z;
+}
+
 void Player::normalInput(unsigned char key, int x, int y)
 {
     if(!move)
@@ -77,42 +97,22 @@ void Player::normalInput(unsigned char key, int x, int y)
     switch(key)
     {
         case 'w':
-            eye.x += direction.x;
-            eye.y += direction.y;
-            eye.z += direction.z;
-            position.x = eye.x + direction.x;
-            position.y = eye.y + direction.y;
-            position.z = eye.z + direction.z;
+            moveForward();
             break;
         case 's':
-            eye.x -= direction.x;
-            eye.y -= direction.y;
-            eye.z -= direction.z;
-            position.x = eye.x + direction.x;
-            position.y = eye.y + direction.y;
-            position.z = eye.z + direction.z;
+            moveBackward();
             break;
         case 'a':
             Theta -= 90;
             LookAt();
-            eye.x += direction.x;
-            eye.y += direction.y;
-            eye.z += direction.z;
-            position.x = eye.x + direction.x;
-            position.y = eye.y + direction.y;
-            position.z = eye.z + direction.z;
+            moveForward();
             Theta += 90;
             LookAt();
             break;
         case 'd':
             Theta += 90;
             LookAt();
-            eye.x += direction.x;
-            eye.y += direction.y;
-            eye.z += direction.z;
-            position.x = eye.x + direction.x;
-            position.y = eye.y + direction.y;
-            position.z = eye.z + direction.z;
+            moveForward();
             Theta -= 90;
             LookAt();
             break;

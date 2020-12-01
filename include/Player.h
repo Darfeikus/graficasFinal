@@ -31,6 +31,9 @@ class Player
         void specialInput(int key, int x, int y);
         void normalInput(unsigned char key, int x, int y);
 
+        void moveForward();
+        void moveBackward();
+
         void draw();
         void LookAt();
         void updateLastPosition();

@@ -21,7 +21,7 @@
 1606856753 /home/darfeikus/Documents/Graficas/Game/include/Enemy.h
 	"Player.h"
 
-1606856533 /home/darfeikus/Documents/Graficas/Game/include/Player.h
+1606859636 /home/darfeikus/Documents/Graficas/Game/include/Player.h
 	"Bullet.h"
 	"Point.h"
 	<stdlib.h>
@@ -42,14 +42,14 @@
 1606856836 source:/home/darfeikus/Documents/Graficas/Game/src/Enemy.cpp
 	"Enemy.h"
 
-1606435381 source:/home/darfeikus/Documents/Graficas/Game/src/Player.cpp
+1606859708 source:/home/darfeikus/Documents/Graficas/Game/src/Player.cpp
 	"Player.h"
 
 1606436978 source:/home/darfeikus/Documents/Graficas/Game/src/Point.cpp
 	"Point.h"
 	<string>
 
-1606857615 source:/home/darfeikus/Documents/Graficas/Game/src/Scene.cpp
+1606857931 source:/home/darfeikus/Documents/Graficas/Game/src/Scene.cpp
 	"Scene.h"
 	"RgbImage.h"
 
