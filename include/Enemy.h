@@ -12,6 +12,11 @@ class Enemy
         
         vector<Point> points;
         Enemy(vector<Point> points, int speed, float radius);
+
+        Point lastPosition;
+        Point getLastPosition();
+        void updateLastPosition();
+        void resetToLastPosition();
         
         int indexPoints;
         int numberOfPoints;
@@ -24,6 +29,7 @@ class Enemy
 
         void draw();
         void update();
+        void moveIndex();
         
         virtual ~Enemy();
 

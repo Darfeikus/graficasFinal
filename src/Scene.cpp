@@ -45,13 +45,13 @@ void Scene::drawWalls()
     glBegin(GL_QUADS);
     /* Floor */
     glTexCoord2f(0.0, 0.0);
-    glVertex3f(-25,-1,-25);
+    glVertex3f(-25,-5,-25);
     glTexCoord2f(0.0, 25.0);
-    glVertex3f(25,-1,-25);
+    glVertex3f(25,-5,-25);
     glTexCoord2f(25.0, 25.0);
-    glVertex3f(25,-1,25);
+    glVertex3f(25,-5,25);
     glTexCoord2f(25.0, 0.0);
-    glVertex3f(-25,-1,25);
+    glVertex3f(-25,-5,25);
 
     glEnd();
 
@@ -144,6 +144,8 @@ void Scene::drawEnemies(){
     for (size_t i = 0; i < enemies.size(); i++)
     {
         enemies[i].update();
+        checkCollisionEnemies();
+        enemies[i].updateLastPosition();
         enemies[i].draw();
     }
 }
@@ -177,6 +179,30 @@ void Scene::checkCollisionEnemies()
 {
     float distance = 0;
 
+    for (size_t i = 0; i < centers.size(); i++)
+    {
+        for (size_t j = 0; j < enemies.size(); j++)
+        {
+            distance = sqrt(
+                pow(centers[i].point.x-enemies[j].position.x,2)+
+                pow(centers[i].point.y-enemies[j].position.y,2)+
+                pow(centers[i].point.z-enemies[j].position.z,2)
+            );
+            if (distance < centers[i].radius)
+            {
+
+                enemies[i].resetToLastPosition();
+                enemies[i].moveIndex();
+                return;
+            }
+        }
+    }
+}
+
+void Scene::checkCollisionEnemiesBullets()
+{
+    float distance = 0;
+
     for (size_t i = 0; i < player.bullets.size(); i++)
     {
         for (size_t j = 0; j < enemies.size(); j++)
@@ -200,7 +226,7 @@ void Scene::draw()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    checkCollisionEnemies();
+    checkCollisionEnemiesBullets();
 
     player.move=false;
 
@@ -238,16 +264,16 @@ void Scene::init()
 
 void Scene::initEnemies(){
     enemies.push_back(
-        Enemy({{0,0,0},{25,0,0},{25,0,25},{-25,0,25}},1,5)
+        Enemy({{0,0,0},{23,0,0},{23,0,23},{-23,0,23}},1,5)
     );
     enemies.push_back(
-        Enemy({{0,0,0},{-25,0,0},{-25,0,-25},{25,0,-25}},1,5)
+        Enemy({{0,0,0},{-23,0,0},{-23,0,-23},{23,0,-23}},1,5)
     );
     enemies.push_back(
-        Enemy({{0,0,0},{0,0,25},{-25,0,25},{25,0,25}},1,5)
+        Enemy({{0,0,0},{0,0,23},{-23,0,23},{23,0,23}},1,5)
     );
     enemies.push_back(
-        Enemy({{0,0,0},{0,0,-25},{25,0,-25},{-25,0,-25}},1,5)
+        Enemy({{0,0,0},{0,0,-23},{23,0,-23},{-23,0,-23}},1,5)
     );
 }
 

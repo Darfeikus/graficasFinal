@@ -34,6 +34,7 @@ class Scene
         void drawBullets();
         void drawEnemies();
 
+        void checkCollisionEnemiesBullets();
         void checkCollisionEnemies();
         bool checkCollision(Point point);
         bool checkBoundaries(Point point);
