@@ -10,6 +10,14 @@ Player::Player()
     updateLastPosition();
 }
 
+Player::Player(GLfloat x, GLfloat y, GLfloat z)
+{
+    this->position = Point(x,y,z);
+    this->eye = Point(x+1,y+0,z+1);
+    this->up = Point(x+0,y+1,z+0);
+    this->direction = Point(x+1,y+0,z+0);
+}
+
 void Player:: updateLastPosition()
 {
     this->lastPosition = {position,eye,up,direction};
@@ -34,13 +42,6 @@ Point Player::getLastPosition()
     return lastPosition[0];
 }
 
-Player::Player(GLfloat x, GLfloat y, GLfloat z)
-{
-    this->position = Point(x,y,z);
-    this->eye = Point(x+1,y+0,z+1);
-    this->up = Point(x+0,y+1,z+0);
-    this->direction = Point(x+1,y+0,z+0);
-}
 
 void Player::LookAt()
 {
